@@ -23,11 +23,17 @@ const passwordRef = useRef()
 
   }, [length, numberAllowed, charAllowed, setPassword])
 
-  const copyPasswordToClipboard = useCallback(()=> {
-    passwordRef.current?.select()
-    passwordRef.current?.setSelectionRange(0,999)
-    window.navigator.clipboard.writeText(password)
-  },[password])
+  const copyPasswordToClipboard = useCallback(() => {
+    passwordRef.current?.select();
+    passwordRef.current?.setSelectionRange(0, 999);
+    window.navigator.clipboard.writeText(password);
+    setCopied(true); // Password is copied
+    setTimeout(() => {
+        setCopied(false); // Reset copied state after a delay
+    }, 2000); // Reset after 2 seconds
+}, [password]);
+
+  const [copied, setCopied] = useState(false);
 
  useEffect( () =>{
   passwordGenerator();
@@ -45,10 +51,12 @@ const passwordRef = useRef()
         readOnly 
         ref={passwordRef}
         />
-      <button
-        onClick={copyPasswordToClipboard}
-        className='outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0'
-        >Copy</button>
+        <button
+    onClick={copyPasswordToClipboard}
+    className={`outline-none bg-${copied ? 'green' : 'blue'}-700 text-white px-3 py-0.5 shrink-0`}
+>
+    {copied ? 'Copied!' : 'Copy'}
+</button>
       </div>
       <div className='flex text-sm gap-x-2'>
         <div className='flex items-center gap-x-1'>
