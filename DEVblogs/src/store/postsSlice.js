@@ -14,6 +14,9 @@ const postsSlice = createSlice({
     deletePosts: (state) => {
       state.allPosts = []; // Clear allPosts array
     },
+    addUserPosts: (state, action) => {
+      state.allPosts = [...state.allPosts, ...action.payload]; // Add new posts to allPosts array
+    },
   },
 });
 
